@@ -182,9 +182,13 @@ def retrieve(query, k=5):
     return results
 
 if __name__ == "__main__":
-    build_index()
-    res = retrieve("What are benefits of AI?")
-    print(res)
+    # build_index()
+    # res = retrieve("What are benefits of AI?")
+    # print(res)
+    ds = load_dataset("HuggingFaceFW/fineweb", name="sample-10BT", split="train", streaming=False)
+
+    # 打印数据集中第一项
+    print(ds[0])
 
 # if __name__ == "__main__":
 #     from datasets import load_dataset
@@ -210,41 +214,5 @@ if __name__ == "__main__":
 #         process(doc)
 
 #     main()
-=======
 
-# 加载环境变量
-load_dotenv()
-api_key = os.getenv("AI71_API_KEY")
 
-# 初始化 AI71 客户端
-client = AI71(api_key=api_key)
-
-# 初始化对话消息
-messages = [{"role": "system", "content": "You are a helpful assistant."}]
-
-# 添加用户提问
-user_input = "你对 AI 技术怎么看？"
-messages.append({"role": "user", "content": user_input})
-
-# 打印用户提问
-print(f"User: {user_input}")
-print("Falcon:", end=" ", flush=True)
-
-# 初始化助手回复内容
-assistant_reply = ""
-
-# 调用模型并流式输出回复
-for chunk in client.chat.completions.create(
-    messages=messages,
-    model="tiiuae/falcon3-10b-instruct",
-    stream=True,
-):
-    delta_content = chunk.choices[0].delta.content
-    if delta_content:
-        print(delta_content, end="", flush=True)
-        assistant_reply += delta_content
-
-# 添加助手回复到消息列表
-messages.append({"role": "assistant", "content": assistant_reply})
-print("\n")
->>>>>>> 25c2b73c6201d0e422ed088ea4c0e5667fb1811b
